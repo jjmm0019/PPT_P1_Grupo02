@@ -6,6 +6,7 @@
 #define SC "USER"  // SOLICITUD DE CONEXION USER usuario 
 #define PW "PASS"  // Password del usuario  PASS password
 
+#define SUM "SUM"
 #define SD  "QUIT"  // Finalizacion de la conexion de aplicacion
 #define SD2 "EXIT"  // Finalizacion de la conexion de aplicacion y finaliza servidor
 

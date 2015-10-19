@@ -36,6 +36,8 @@ int main(int *argc, char *argv[])
 	WORD wVersionRequested;
 	WSADATA wsaData;
 	int err;
+	char numero1[5]="", numero2[5]=" ";
+	int contador=0;
 
     char ipdest[16];
 	char default_ip[16]="127.0.0.1";
@@ -124,8 +126,16 @@ int main(int *argc, char *argv[])
 							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",SD,CRLF);
 							estado=S_QUIT;
 						}
+						else if(strcmp(input, SUM)==0)
+						{
+							printf("CLIENTE> Introduzca el primer número( menos de 4 números):");
+							gets(numero1);
+							printf("CLIENTE> Introduzca el segundo número( menos de 4 números):");
+							gets(numero2);
+						}
 						else
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s",input,CRLF);
+							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s %s%s",SUM,numero1,numero2,CRLF);
+
 						break;
 				 
 				
@@ -133,10 +143,27 @@ int main(int *argc, char *argv[])
 					//Envio
 					if(estado!=S_HELO)
 					// Ejercicio: Comprobar el estado de envio
-						enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
+					enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
 
+					if(enviados<=0)
+					{
+						DWORD error=GetLastError();
+						if(enviados<0)
+						{
+							printf("CLIENTE> Error %d en el envio de datos\r\n",error);
+							estado=S_QUIT;
+						}
+						else
+						{
+							printf("CLIENTE> Conexión con el servidor cerrada\r\n");
+							estado=S_QUIT;
+						
+					
+						}
+					}
 					//Recibo
 					recibidos=recv(sockfd,buffer_in,512,0);
+
 
 					if(recibidos<=0)
 					{

@@ -35,6 +35,7 @@ main()
 	int fin=0, fin_conexion=0;
 	int recibidos=0,enviados=0;
 	int estado=0;
+	int numero1=0, numero2=0, suma=0;
 
 	/** INICIALIZACION DE BIBLIOTECA WINSOCK2 **
 	 ** OJO!: SOLO WINDOWS                    **/
@@ -91,7 +92,21 @@ main()
 		
 		enviados=send(nuevosockfd,buffer_out,(int)strlen(buffer_out),0);
 		//TODO Comprobar error de envío
- 
+		if(enviados<=0)
+					{
+						DWORD error=GetLastError();
+						if(enviados<0)
+						{
+							printf("SERVIDOR> Error %d en el envio de datos\r\n",error);
+							fin_conexion=1;
+						}
+						else
+						{
+							fin_conexion=1;
+						
+					
+						}
+					}
 		//Se reestablece el estado inicial
 		estado = S_USER;
 		fin_conexion = 0;
@@ -102,6 +117,21 @@ main()
 			//Se espera un comando del cliente
 			recibidos = recv(nuevosockfd,buffer_in,1023,0);
 			//TODO Comprobar posible error de recepción
+			if(recibidos<=0)
+					{
+						DWORD error=GetLastError();
+						if(enviados<0)
+						{
+							printf("SERVIDOR> Error %d en la recepción de datos\r\n",error);
+							fin_conexion=1;
+						}
+						else
+						{
+							fin_conexion=1;
+						
+					
+						}
+					}
 			
 			buffer_in[recibidos] = 0x00;
 			printf ("SERVIDOR [bytes recibidos]> %d\r\nSERVIDOR [datos recibidos]>%s", recibidos, buffer_in);
@@ -186,6 +216,16 @@ main()
 						fin_conexion=1;
 						fin=1;
 					}
+					//SUM
+					else if(strcmp(cmd, "SUM")==0)
+					{
+						sscanf_s(buffer_in, "SUM %d %d\r\n",&numero1,&numero2);
+						if(numero1>0 && numero1 <9999 && numero2 >0 && numero2<9999)
+						{
+							suma=numero1+numero2;
+							printf("%d",suma);
+							sprintf_s(buffer_out, sizeof(buffer_out), "%s %d%s",OK, suma, CRLF);
+						}
 					else
 					{
 						sprintf_s (buffer_out, sizeof(buffer_out), "%s Comando incorrecto%s",ER,CRLF);
@@ -200,6 +240,22 @@ main()
 			enviados=send(nuevosockfd,buffer_out,(int)strlen(buffer_out),0);
 			//TODO 
 
+			if(enviados<=0)
+					{
+						DWORD error=GetLastError();
+						if(enviados<0)
+						{
+							printf("SERVIDOR> Error %d en el envio de datos\r\n",error);
+							fin_conexion=1;
+						}
+						else
+						{
+							fin_conexion=1;
+						
+							}
+						}
+					}
+
 
 		} while (!fin_conexion);
 		printf ("SERVIDOR> CERRANDO CONEXION DE TRANSPORTE\r\n");
@@ -211,4 +267,5 @@ main()
 	printf ("SERVIDOR> CERRANDO SERVIDOR\r\n");
 
 	return(0);
-} 
+
+	}

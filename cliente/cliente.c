@@ -36,8 +36,8 @@ int main(int *argc, char *argv[])
 	WORD wVersionRequested;
 	WSADATA wsaData;
 	int err;
-	char numero1[5]="", numero2[5]=" ";
-	int contador=0;
+	char numero1[4]="", numero2[4]=" ";
+	//int contador=0;
 
     char ipdest[16];
 	char default_ip[16]="127.0.0.1";
@@ -104,8 +104,7 @@ int main(int *argc, char *argv[])
 							estado=S_QUIT;
 						}
 						else
-
-						sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",SC,input,CRLF);
+							sprintf_s (buffer_out, sizeof(buffer_out), "%s %s%s",SC,input,CRLF);
 						break;
 					case S_PASS:
 						printf("CLIENTE> Introduzca la clave (enter para salir): ");
@@ -128,20 +127,18 @@ int main(int *argc, char *argv[])
 						}
 						else if(strcmp(input, SUM)==0)
 						{
-							printf("CLIENTE> Introduzca el primer número( menos de 4 números):");
+							printf("CLIENTE> Introduzca el primer numero( menos de 4 numeros):");
 							gets(numero1);
-							printf("CLIENTE> Introduzca el segundo número( menos de 4 números):");
+							printf("CLIENTE> Introduzca el segundo numero( menos de 4 numeros):");
 							gets(numero2);
+							sprintf_s (buffer_out, sizeof(buffer_out), "%s %s %s%s",SUM,numero1,numero2,CRLF);
 						}
-						else
-							sprintf_s (buffer_out, sizeof(buffer_out), "%s%s %s%s",SUM,numero1,numero2,CRLF);
-
 						break;
 				 
 				
 					}
 					//Envio
-					if(estado!=S_HELO)
+					if(estado!=S_HELO){
 					// Ejercicio: Comprobar el estado de envio
 					enviados=send(sockfd,buffer_out,(int)strlen(buffer_out),0);
 
@@ -160,6 +157,7 @@ int main(int *argc, char *argv[])
 						
 					
 						}
+					}
 					}
 					//Recibo
 					recibidos=recv(sockfd,buffer_in,512,0);
@@ -187,7 +185,7 @@ int main(int *argc, char *argv[])
 						if(estado!=S_DATA && strncmp(buffer_in,OK,2)==0) 
 							estado++;  
 					}
-
+					
 				}while(estado!=S_QUIT);
 				
 	

@@ -217,19 +217,18 @@ main()
 						fin=1;
 					}
 					//SUM
-					else if(strcmp(cmd, "SUM")==0)
+					else if(strcmp(cmd, "SUM ")==0)
 					{
-						sscanf_s(buffer_in, "SUM %d %d\r\n",&numero1,&numero2);
+						sscanf_s(buffer_in, "SUM  %d %d \r\n",&numero1,&numero2);
 						if(numero1>0 && numero1 <9999 && numero2 >0 && numero2<9999)
 						{
 							suma=numero1+numero2;
 							printf("%d",suma);
-							sprintf_s(buffer_out, sizeof(buffer_out), "%s %d%s",OK, suma, CRLF);
+							sprintf_s(buffer_out, sizeof(buffer_out), "%s %d %s",OK, suma, CRLF);
 						}
-					else
-					{
-						sprintf_s (buffer_out, sizeof(buffer_out), "%s Comando incorrecto%s",ER,CRLF);
 					}
+					else
+						sprintf_s (buffer_out, sizeof(buffer_out), "%s Comando incorrecto%s",ER,CRLF);
 					break;
 
 				default:
@@ -253,7 +252,7 @@ main()
 							fin_conexion=1;
 						
 							}
-						}
+						
 					}
 
 

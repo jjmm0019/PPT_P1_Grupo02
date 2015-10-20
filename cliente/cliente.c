@@ -132,7 +132,7 @@ int main(int *argc, char *argv[])
 							printf("CLIENTE> Introduzca el segundo numero( menos de 4 numeros):");
 							gets(numero2);
 							sprintf_s (buffer_out, sizeof(buffer_out), "%s %s %s%s",SUM,numero1,numero2,CRLF);
-						}
+							}
 						break;
 				 
 				
